@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Demo_C_
 {
@@ -7,61 +8,58 @@ namespace Demo_C_
     {
         public int id;
         public string customer;
-        public int grandTotal;
-        public List<Product> productList = new List<Product>();
+        public decimal grandTotal;
+        public List<Product> productList;
         public string city;
         public string country;
-        
+
         //Phuong thuc them san pham vao gio hang
-        public void AddProduct()
+        public bool AddProduct(Product p)
         {
-            Product p = new Product();
-            p.id = Convert.ToInt32(Console.ReadLine());
-            p.name = Console.ReadLine();
-            p.price = Convert.ToInt32(Console.ReadLine());
-            p.qty = Convert.ToInt32(Console.ReadLine());
-            p.image = Console.ReadLine();
-            p.desc = Console.ReadLine();
-            string g1 = Console.ReadLine();
-            string g2 = Console.ReadLine();
-            p.gallery.Add(g1);
-            p.gallery.Add(g2);
-
-            productList.Add(p);
-
+            if (!productList.Contains(p) && p.CheckQty())
+            {    
+                productList.Add(p);
+                p.qty--;
+                grandTotal += p.price;
+                return true;
+            }
+            Console.WriteLine("san pham da co trong gio hang");
+            return false;
         }
         
         //Phuong thuc xoa 1 san pham khoi gio hang
-        public void RemoveProduct()
+        public bool RemoveProduct(Product p)
         {
-            Console.WriteLine("Xoa san pham co ID la: ");
-            int x = Convert.ToInt32(Console.ReadLine());
-            foreach (Product product in productList)
+            if (productList.Contains(p))
             {
-                if (product.id == x)
+                productList.Remove(p);
+                p.qty++;
+                grandTotal -= p.price;
+                return true;
+            }
+            Console.WriteLine("san pham khong co trong gio hang");
+            return false;
+        }
+         
+        //Phuong thuc tinh tong tien
+        public decimal GetGrandTotal()
+        {
+            decimal finalTotal;
+            if (country == "VN")
+            {
+                if (city == "HN" || city == "HCM")
                 {
-                    productList.Remove(product);
+                    finalTotal = grandTotal * (decimal) 1.01;
+                }
+                else
+                {
+                    finalTotal = grandTotal * (decimal) 1.02;
                 }
             }
-
-        }
-        
-        //Phuong thuc tinh tong tien
-        public int GrandTotal()
-        {
-            int total;
-            if (city = "Ha Noi" || city = "Ho Chi Minh")
+            else
             {
-                return grandTotal = total + total * 1 %;
-            } else if (city =! "Viet Nam")
-            {
-                return grandTotal = total + total * 5 %;   
+                finalTotal = grandTotal * (decimal) 1.05;
             }
-            else 
-            {
-                return grandTotal = total + total * 2 %;
-            }
-            Console.WriteLine("Grand Total = " +grandTotal);
         }
 
     }

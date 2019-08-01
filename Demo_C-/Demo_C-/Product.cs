@@ -1,34 +1,37 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Net.Mime;
+using System.Diagnostics.Contracts;
 
 namespace Demo_C_
 {
-    public class Product
+    public abstract class Product
     {
         public int id;
         public string name;
-        public int price;
+        public decimal price;
         public int qty;
         public string image;
         public string desc;
-        public List<string> gallery = new List<string>();
-        
-        //Constructor ko co tham so
+        public List<string> gallery;
+
         public Product()
         {
-            
         }
-        
-        //Constructor day du tham so
-        public Product(int id, string name, int price, int qty, string image, string desc, List<string> gallery)
+
+        public Product(int id, string name, decimal price, int qty, string image, string desc)
         {
+            this.id = id;
+            this.name = name;
+            this.price = price;
+            this.qty = qty;
+            this.image = image;
+            this.desc = desc; 
+            this.gallery = new List<string>();
             
         }
-        
-        //Phuong thuc hien thi thong tin product
-        public void GetInfo()
+
+        //Hien thi thong tin product
+        public virtual void GetInfo()//them virtual de override o lop Shoe
         {
             Console.WriteLine("ID: " +id);
             Console.WriteLine("Name: " +name);
@@ -36,83 +39,90 @@ namespace Demo_C_
             Console.WriteLine("Quantity: " +qty);
             Console.WriteLine("Image: " +image);
             Console.WriteLine("Description: " +desc);
-            foreach (string g in gallery) 
+            foreach (string s in gallery)
             {
-                Console.WriteLine("Gallery: "+g);
-            }
-                
-        }
-        
-        //Phuong thuc thong bao con hang hay het hang
-        public void ShowStock()
-        {
-            if (qty == 0)
-            {
-                Console.WriteLine(name+ " is out of stock");
-            } else
-            {
-                Console.WriteLine(name+ " is in stock");
-            }
-            
-        }
-        
-        //Phuong thuc them anh vao gallery (toi da 10 anh)
-        public void AddGallery()
-        {
-            if (gallery.Count >= 10)
-            {
-                Console.WriteLine("Galley da du 10 anh. Vui long xoa bot anh truoc khi them.");
-                
-            }
-            else
-            {
-                string g = Console.ReadLine();
-                gallery.Add(g);
+                Console.WriteLine(s);
             }
         }
-        
-        //Phuong thuc xoa anh trong gallery
-        public void RemoveGallery()
+
+        //Kiem tra xem con hang hay khong
+        public bool CheckQty()
         {
-            foreach (string g in gallery)
+            if (qty > 0)
             {
-                Console.WriteLine("Gallery: "+g);
+                return true;
             }
-            
-            Console.WriteLine("Chon anh muon xoa: ");
-            int x = Convert.ToInt32(Console.ReadLine());
-            
-            gallery.RemoveAt(x);
+
+            return false;
+        }
+
+        //Them anh vao gallery: Cach 1 --> Co tinh ung dung cao hon 
+        public bool AddGallery(string img)
+        {
+            if (gallery.Count < 10)
+            {
+                gallery.Add(img);
+                return true;
+            }
+
+            Console.WriteLine("Qua so anh cho phep");
+            return false;
+        }
+        
+        //Them anh vao gallery: Cach 2
+        public void AddGallery2()
+        {
+            if (gallery.Count > 10)
+            {
+                string img = Console.ReadLine();
+                gallery.Add(img);
+                return;
+            }
+            Console.WriteLine("Qua so anh cho phep");
+            return;
+        }
+        
+        //Xoa anh khoi gallery: Cach 1
+        public bool RemoveGallery(int n)
+        {
+            if (n < gallery.Count)
+            {
+                gallery.RemoveAt(n);
+                return true;
+            }
+
+            Console.WriteLine("Khong tim thay anh hoac khong the xoa.");
+            return false;
+        }
+
+        //Xoa anh khoi gallery: Cach 2
+        public void RemoveGallery2()
+        {
+            int i = 0;
+            foreach (string s in gallery)
+            {
+                Console.WriteLine(i+". " +s);
+                i++;
+            }
+
+            Console.WriteLine("Nhap vi tri anh muon xoa");
+            int n = Convert.ToInt16(Console.ReadLine());
+            gallery.RemoveAt(n);
+        }
+
+        public abstract void TinhTien();
+
+        public string this[int index]
+        {
+            get { return gallery[index]; }
+            set { gallery[index] = value; }
+        }
+
+        public virtual void TinhTien2()
+        {
+            Product p = new Product();
             
         }
 
-        public static void Main(String[] args)
-        {
-            Product p = new Product();
-            p.id = 1;
-            p.name = "Tivi";
-            p.price = 10000000;
-            p.qty = 15;
-            p.image = "image.jpeg";
-            p.desc = "Samsung 55 inches";
-            p.gallery.Add("anh1");
-            p.gallery.Add("anh2");
-            p.gallery.Add("anh3");
-            p.gallery.Add("anh4");
-            p.gallery.Add("anh5");
-            p.gallery.Add("anh6");
-            p.gallery.Add("anh7");
-            p.gallery.Add("anh8");
-            p.gallery.Add("anh9");
-            p.gallery.Add("anh10");
-                
-            p.GetInfo();
-            p.ShowStock();
-            p.AddGallery();
-            p.RemoveGallery();
-            
-        }
-        
-        
     }
 }
