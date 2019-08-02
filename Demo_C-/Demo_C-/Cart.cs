@@ -4,6 +4,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace Demo_C_
 {
+    public delegate void ChangeCart(string s);
     public class Cart
     {
         public int id;
@@ -12,6 +13,13 @@ namespace Demo_C_
         public List<Product> productList;
         public string city;
         public string country;
+        
+        public event ChangeCart Alert ;
+
+        private void Notify(string s)
+        {
+            Console.WriteLine(s);
+        }
 
         //Phuong thuc them san pham vao gio hang
         public bool AddProduct(Product p)
@@ -21,12 +29,19 @@ namespace Demo_C_
                 productList.Add(p);
                 p.qty--;
                 grandTotal += p.price;
+                if (Alert == null)
+                {
+                    Alert += Notify;
+                }
+                Alert("New product was added.")
+                Alert("Quality has changed.")
+                Alert("Grand total has changed.")
                 return true;
             }
-            Console.WriteLine("san pham da co trong gio hang");
+            Alert("Already added.");
             return false;
         }
-        
+
         //Phuong thuc xoa 1 san pham khoi gio hang
         public bool RemoveProduct(Product p)
         {
@@ -37,7 +52,7 @@ namespace Demo_C_
                 grandTotal -= p.price;
                 return true;
             }
-            Console.WriteLine("san pham khong co trong gio hang");
+            Console.WriteLine("San pham khong co trong gio hang");
             return false;
         }
          
@@ -61,6 +76,8 @@ namespace Demo_C_
                 finalTotal = grandTotal * (decimal) 1.05;
             }
         }
+        
+        
 
     }
 }
