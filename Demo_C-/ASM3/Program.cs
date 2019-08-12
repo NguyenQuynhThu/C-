@@ -66,22 +66,22 @@ namespace ASM3
             listNews.Add(ns);
         }
 
-//        static void ListNews(List<News> listNews)
-//        {
-//            foreach (News news in listNews)
-//            {
-//             news.Display();   
-//            }
-//        }
-//
-//        static void AvgRate(List<News> listNews)
-//        {
-//            foreach (News news in listNews)
-//            {
-//                news.Calculate();
-//                news.Display();
-//            }
-//        }
+        static void ListNews(List<News> listNews)
+        {
+            foreach (News news in listNews)
+            {
+             news.Display();   
+            }
+        }
+
+        static void AvgRate(List<News> listNews)
+        {
+            foreach (News news in listNews)
+            {
+                news.Calculate();
+                news.Display();
+            }
+        }
 
         static void AvgAndView(List<News> listNews, bool func = false)
         {
