@@ -42,10 +42,6 @@ namespace ASM6
             }
             sw.Stop();
             Console.WriteLine("Thoi gian tinh la: " +sw.Elapsed);
-
         }
-        
-        
-        
     }
 }
